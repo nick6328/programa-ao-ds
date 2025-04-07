@@ -1,29 +1,74 @@
-#Exemplo de game loop no Python para jogo da forca
 palavra_secreta = "girafa"
-letras_acertadas = ["_", "_", "_", "_", "_", "_"]
+letras_acertadas = ["_"] * len(palavra_secreta)
 tentativas = 6
 
+# Desenho da forca por etapas
+desenhos = [
+    """
+       ------
+       |    |
+       O    |
+            |
+            |
+            |
+    """,
+    """
+       ------
+       |    |
+       O    |
+       |    |
+            |
+            |
+    """,
+    """
+       ------
+       |    |
+       O    |
+      /|    |
+            |
+            |
+    """,
+    """
+       ------
+       |    |
+       O    |
+      /|\\   |
+            |
+            |
+    """,
+    """
+       ------
+       |    |
+       O    |
+      /|\\   |
+      /     |
+            |
+    """,
+    """
+       ------
+       |    |
+       O    |
+      /|\\   |
+      / \\   |
+            |
+    """
+]
+
 while tentativas > 0 and "_" in letras_acertadas:
+    print(desenhos[6 - tentativas])  # Mostra o estado atual da forca
+    print(" ".join(letras_acertadas))
     palpite = input("Digite uma letra: ").lower()
 
     if palpite in palavra_secreta:
-        index = 0
-        for letra in palavra_secreta:
-            if palpite == letra:
+        for index, letra in enumerate(palavra_secreta):
+            if letra == palpite:
                 letras_acertadas[index] = letra
-            index += 1
     else:
         tentativas -= 1
-        print(f"Você tem {tentativas} tentativas restantes.")
-    
-    print(" ".join(letras_acertadas))
+        print(f"Você errou! Você tem {tentativas} tentativas restantes.")
 
 if "_" not in letras_acertadas:
     print("Parabéns, você ganhou!")
 else:
+    print(desenhos[-1])  # Exibe o desenho final da forca
     print("Que pena, você perdeu. A palavra era:", palavra_secreta)
-
-""" Este código ilustra um game loop básico para o jogo da forca, 
-onde o jogador tem um número limitado de tentativas para adivinhar
-a palavra secreta. O loop continua até que o jogador acerte a 
-palavra ou esgote suas tentativas. """
