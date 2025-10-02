@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Times do Coração</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button { margin: 5px 0; display: block; width: 300px; }
+    #dialogo {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      background-color: #fff;
+      border: 2px solid #333;
+      padding: 20px;
+      z-index: 1000;
+      width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    #fundo {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Cadastro de Times do Coração</h2>
+  <input type="text" id="campoTime" placeholder="Digite o nome do seu time">
+  <button onclick="adicionarTime()">Adicionar Time</button>
+  <button onclick="abrirDialogo()">Ver Lista de Times</button>
+
+  <div id="fundo" onclick="fecharDialogo()"></div>
+  <div id="dialogo">
+    <h3>Times Cadastrados</h3>
+    <ul id="listaTimes"></ul>
+    <button onclick="fecharDialogo()">Fechar</button>
+  </div>
+
+  <script>
+    const times = [];
+
+    function adicionarTime() {
+      const time = document.getElementById("campoTime").value.trim();
+      if (time) {
+        times.push(time);
+        document.getElementById("campoTime").value = "";
+        alert("Time adicionado com sucesso!");
+      } else {
+        alert("Digite o nome do time antes de adicionar.");
+      }
+    }
+
+    function abrirDialogo() {
+      const lista = document.getElementById("listaTimes");
+      lista.innerHTML = "";
+      if (times.length === 0) {
+        lista.innerHTML = "<li>Nenhum time cadastrado ainda.</li>";
+      } else {
+        times.forEach(t => {
+          const li = document.createElement("li");
+          li.textContent = t;
+          lista.appendChild(li);
+        });
+      }
+      document.getElementById("fundo").style.display = "block";
+      document.getElementById("dialogo").style.display = "block";
+    }
+
+    function fecharDialogo() {
+      document.getElementById("fundo").style.display = "none";
+      document.getElementById("dialogo").style.display = "none";
+    }
+  </script>
+</body>
+</html>
