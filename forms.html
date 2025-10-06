@@ -24,9 +24,10 @@
 
   <button onclick="incluirCliente()">Incluir Cliente</button>
   <button onclick="alterarCliente()">Alterar Cliente</button>
+  <!-- Botão será criado via JavaScript -->
 
   <script>
-    // Inicializar clientes no localStorage se ainda não existir
+    // Inicialização
     if (!localStorage.getItem("clientes")) {
       const clientesIniciais = [
         { id: 1, nome: "João Silva", endereco: "Rua A", telefone: "123456", email: "joao@gmail.com" },
@@ -37,7 +38,7 @@
 
     const listBox = document.getElementById("listBoxClientes");
 
-    function carregarListaClientes() {
+    function carregarLista() {
       listBox.innerHTML = "";
       const listaClientes = JSON.parse(localStorage.getItem("clientes")) || [];
       listaClientes.forEach(cliente => {
@@ -75,7 +76,7 @@
       }
 
       const listaClientes = JSON.parse(localStorage.getItem("clientes")) || [];
-      const novoId = listaClientes.length > 0 ? Math.max(...listaClientes.map(c => c.id)) + 1 : 1;
+      const novoId = listaClientes.length ? Math.max(...listaClientes.map(c => c.id)) + 1 : 1;
 
       const novoCliente = {
         id: novoId,
@@ -87,19 +88,19 @@
 
       listaClientes.push(novoCliente);
       localStorage.setItem("clientes", JSON.stringify(listaClientes));
-      carregarListaClientes();
-      alert("Cliente incluído com sucesso!");
+      carregarLista();
+      limparCampos();
     }
 
     function alterarCliente() {
-      if (!validarCampos()) {
-        alert("Preencha todos os campos antes de alterar.");
+      const selectedId = parseInt(listBox.value);
+      if (isNaN(selectedId)) {
+        alert("Selecione um cliente para alterar.");
         return;
       }
 
-      const selectedId = parseInt(listBox.value);
-      if (!selectedId) {
-        alert("Selecione um cliente para alterar.");
+      if (!validarCampos()) {
+        alert("Preencha todos os campos antes de alterar.");
         return;
       }
 
@@ -114,13 +115,26 @@
           email: document.getElementById("txtEmail").value.trim()
         };
         localStorage.setItem("clientes", JSON.stringify(listaClientes));
-        carregarListaClientes();
-        alert("Cliente alterado com sucesso!");
+        carregarLista();
+        limparCampos();
       }
     }
 
+    function limparCampos() {
+      document.getElementById("txtNome").value = "";
+      document.getElementById("txtEndereco").value = "";
+      document.getElementById("txtTelefone").value = "";
+      document.getElementById("txtEmail").value = "";
+    }
+
+    // Criar botão "Limpar campos" via JavaScript
+    const botaoLimpar = document.createElement("button");
+    botaoLimpar.textContent = "Limpar campos";
+    botaoLimpar.onclick = limparCampos;
+    document.body.appendChild(botaoLimpar);
+
     // Carregar lista ao iniciar
-    carregarListaClientes();
+    carregarLista();
   </script>
 </body>
 </html>
